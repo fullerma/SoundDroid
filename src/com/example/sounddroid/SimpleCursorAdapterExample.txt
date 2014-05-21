@@ -1,0 +1,79 @@
+			// ---------------------
+			// Add songs to our list
+			// ---------------------
+			String[] fromColumns = new String[] {
+					MediaStore.Audio.Media.ARTIST,
+					MediaStore.Audio.Media.TITLE,
+					MediaStore.Audio.Media.DURATION
+			};
+			int[] toControlIDs = new int[] {
+					R.id.artist,
+					R.id.title,
+					R.id.duration
+			};
+			// use a SimpleCursorAdapter to map query columns to controls in the list view
+			SimpleCursorAdapter songAdapter = new SimpleCursorAdapter (this, R.layout.layout_song, musicCursor, fromColumns, toControlIDs, 0);
+			
+			// Change the way the adapter binds it's views (so duration can be shown in minutes:seconds rather than milliseconds)
+			songAdapter.setViewBinder(new ViewBinder() {
+			    @SuppressLint("NewApi")
+				public boolean setViewValue(View aView, Cursor aCursor, int aColumnIndex) {
+			        if (aColumnIndex == 5) { // DURATION column in our query
+			        		// Set the duration text view
+			                int dur = aCursor.getInt(aColumnIndex);
+			                String path;
+			                String durAsMinutesSeconds = GetMinutesSeconds(dur);
+			                TextView textView = (TextView) aView;
+			                //textView.setText("_ID=" + aCursor.getString(aCursor.getColumnIndex(MediaStore.Audio.Media._ID)) + ", AlbumID=" +  aCursor.getString(aCursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID)));
+			                textView.setText(durAsMinutesSeconds);
+			                
+			                // Set the album art image
+			                long AlbumID = aCursor.getLong(aCursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
+			                
+			                try {
+			                	final Uri ART_CONTENT_URI = Uri.parse("content://media/external/audio/albumart");
+			                	Uri albumArtUri = ContentUris.withAppendedId(ART_CONTENT_URI, AlbumID);
+			                	Bitmap bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), albumArtUri);
+			                	ImageView ivAlbumArt=(ImageView)findViewById(R.id.thumbnail);
+				                ivAlbumArt.setImageBitmap(bitmap);
+			                } catch (Exception ex) {
+			                	// Ignore errors
+			                }
+			                
+			                
+			                //Cursor cursor = getContentResolver().query(
+			        	    //        MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
+			        	    //        new String[] {MediaStore.Audio.Albums._ID, MediaStore.Audio.Albums.ALBUM_ART},
+			        	    //        MediaStore.Audio.Albums._ID+ "=?", 
+			                //        new String[] {String.valueOf(AlbumID)}, null, null);
+
+			                //if (cursor.moveToFirst()) {
+			                //	try {
+			                //		path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM_ART));
+			                //		if (path != null) {
+			                //			Bitmap bitmap = BitmapFactory.decodeFile(path, null);
+			                //			ImageView ivAlbumArt=(ImageView)findViewById(R.id.thumbnail);
+			                //			ivAlbumArt.setImageBitmap(bitmap);
+			                //		}
+			                //	} catch (Exception ex) {
+			                		// Ignore errors
+			                //	}
+			                //}
+	    	        //}
+
+			    			//final Uri ART_CONTENT_URI = Uri.parse("content://media/external/audio/albumart");
+			    	        //Uri albumArtUri = ContentUris.withAppendedId(ART_CONTENT_URI, AlbumID);
+			    	        //try {
+			    	        	//new ImageLoader().execute(aView, albumArtUri);
+			    	       //     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), albumArtUri);
+			    	        //    ImageView ivAlbumArt=(ImageView)findViewById(R.id.thumbnail);
+			    			//    ivAlbumArt.setImageBitmap(bitmap);
+			    	        //} catch (Exception exception) {
+			    	            // ignore error
+			    	        //}
+			                return true;
+			         }
+
+			         return false;
+			    }
+			});

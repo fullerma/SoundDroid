@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="5dip" >
+ 
+    <!-- Album Thumbnail -->
+    <ImageView
+            android:id="@+id/thumbnail"
+            android:contentDescription="Album Art"
+            android:layout_width="50dip"
+            android:layout_height="50dip"
+            android:src="@drawable/ic_album"
+    />
+ 
+	<!-- Title Of Song-->
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/thumbnail"
+        android:textColor="#040404"
+        android:layout_marginLeft="5dip"
+        android:textStyle="bold"
+        android:textSize="16sp"
+	 />
+    
+    <!-- Duration -->
+    <TextView
+        android:id="@+id/duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/title"
+        android:layout_marginLeft="10dip"
+        android:textColor="#343434"
+        android:layout_alignParentRight="true"
+        android:textSize="14sp"
+        android:typeface="sans"
+    />
+    
+    <!-- Artist Name -->
+    <TextView
+        android:id="@+id/artist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title"
+        android:layout_toRightOf="@id/thumbnail"
+        android:textColor="#343434"
+        android:layout_marginLeft="5dip"
+        android:typeface="sans"
+        android:textSize="14sp"
+    />
+    
+</RelativeLayout>
